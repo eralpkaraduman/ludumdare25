@@ -28,17 +28,17 @@
     var d = document;
     var c = {
         COCOS2D_DEBUG:2, //0 to turn debug off, 1 for basic debug, and 2 for full debug
-        box2d:false,
+        box2d:true,
         chipmunk:false,
         showFPS:true,
         frameRate:60,
-        loadExtension:false,
         tag:'gameCanvas', //the dom element to run cocos2d on
         engineDir:'./lib/cocos2d-html5/cocos2d/',
         //SingleEngineFile:'',
         appFiles:[
             'src/resource.js',
-            'src/myApp.js'//add your own files in order here
+            'src/myApp.js',//add your own files in order here
+            'src/WaterParticle.js'
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {
@@ -58,9 +58,9 @@
 
             //s.src = 'Packed_Release_File.js'; //IMPORTANT: Un-comment this line if you have packed all files into one
 
+        d.body.appendChild(s);
         document.ccConfig = c;
         s.id = 'cocos2d-html5';
-        d.body.appendChild(s);
         //else if single file specified, load singlefile
     });
 })();
