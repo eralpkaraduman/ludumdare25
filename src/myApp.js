@@ -83,7 +83,7 @@ MyLayer = cc.Layer.extend({
         var mgr = cc.SpriteBatchNode.create(s_pathBlock, 150);
         this.addChild(mgr, 0, TAG_SPRITE_MANAGER);
 
-        this.addNewSpriteWithCoords(cc.p(screenSize.width / 2, screenSize.height / 2));
+        //this.addNewSpriteWithCoords(cc.p(screenSize.width / 2, screenSize.height / 2));
 
         var label = cc.LabelTTF.create("Tap screen", "Marker Felt", 32);
         this.addChild(label, 0);
@@ -92,20 +92,19 @@ MyLayer = cc.Layer.extend({
 
         //cc.Sprite.createWithTexture()
 
-
-        //
         //debugdraw
         var debugDraw = new b2DebugDraw();
-        debugDraw.SetSprite(document.getElementById("gameCanvas").getContext("2d"));
-        debugDraw.SetDrawScale(5.0);
-        debugDraw.SetFillAlpha(0.5);
+        debugDraw.SetSprite(document.getElementById("box2dDebugCanvas").getContext("2d"));
+        //document.getElementById("box2dDebugCanvas").getContext("2d").rotate(180*(Math.PI / 180));
+        debugDraw.SetDrawScale(PTM_RATIO);
+        debugDraw.SetFillAlpha(0.3);
         debugDraw.SetLineThickness(1.0);
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
-        //
+
+
 
         this.scheduleUpdate();
-
     },
 
     draw:function()
@@ -113,7 +112,7 @@ MyLayer = cc.Layer.extend({
         this.world.DrawDebugData();
     },
 
-    addNewSpriteWithCoords:function (p) {
+    addNewWaterParticleWithCoords:function (p) {
         //UXLog(L"Add sprite %0.2f x %02.f",p.x,p.y);
         var batch = this.getChildByTag(TAG_SPRITE_MANAGER);
 
@@ -154,6 +153,11 @@ MyLayer = cc.Layer.extend({
         body.CreateFixture(fixtureDef);
 
     },
+
+    createSea:function(){
+
+    },
+
     update:function (dt) {
         //It is recommended that a fixed time step is used with Box2D for stability
         //of the simulation, however, we are using a variable time step here.
@@ -182,7 +186,7 @@ MyLayer = cc.Layer.extend({
         //Add a new body/atlas sprite at the touched location
         var location = event.getLocation();
         //location = cc.Director.getInstance().convertToGL(location);
-        this.addNewSpriteWithCoords(location);
+        this.addNewWaterParticleWithCoords(location);
     },
     init:function () {
 
