@@ -62,20 +62,20 @@ MyLayer = cc.Layer.extend({
         //create ground
         bodyDef.type = b2Body.b2_staticBody;
         fixDef.shape = new b2PolygonShape;
-        fixDef.shape.SetAsBox(20, 2);
+        fixDef.shape.SetAsBox(this.pxToB2d(screenSize.width/2+40), this.pxToB2d(20));
         // upper
-        bodyDef.position.Set(10, screenSize.height / PTM_RATIO + 1.8);
+        bodyDef.position.Set(this.pxToB2d(screenSize.width/2), this.pxToB2d(screenSize.height+20));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
         // bottom
-        bodyDef.position.Set(10, -1.8);
+        bodyDef.position.Set(this.pxToB2d(screenSize.width/2),this.pxToB2d(-20));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-        fixDef.shape.SetAsBox(2, 14);
+        fixDef.shape.SetAsBox(this.pxToB2d(20), this.pxToB2d(screenSize.height/2+40));
         // left
-        bodyDef.position.Set(-1.8, 13);
+        bodyDef.position.Set(this.pxToB2d(-20), this.pxToB2d(screenSize.height/2));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
         // right
-        bodyDef.position.Set(26.8, 13);
+        bodyDef.position.Set(this.pxToB2d(screenSize.width+20), this.pxToB2d(screenSize.height/2));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //Set up sprite
@@ -90,7 +90,6 @@ MyLayer = cc.Layer.extend({
         label.setColor(cc.c3b(0, 0, 255));
         label.setPosition(cc.p(screenSize.width / 2, screenSize.height - 50));
 
-        //cc.Sprite.createWithTexture()
 
         //debugdraw
         var debugDraw = new b2DebugDraw();
@@ -102,7 +101,7 @@ MyLayer = cc.Layer.extend({
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
 
-
+        this.createSea();
 
         this.scheduleUpdate();
     },
@@ -143,7 +142,7 @@ MyLayer = cc.Layer.extend({
         //var dynamicBox = new b2PolygonShape();
         //dynamicBox.SetAsBox(0.5, 0.5);//These are mid points for our 1m box
         var dynamicCircle = new b2CircleShape();
-        dynamicCircle.m_radius = 4/PTM_RATIO;
+        dynamicCircle.m_radius = 7/PTM_RATIO;
 
         // Define the dynamic body fixture.
         var fixtureDef = new b2FixtureDef();
@@ -154,8 +153,26 @@ MyLayer = cc.Layer.extend({
 
     },
 
-    createSea:function(){
+    pxToB2d:function(value){
+        return value/PTM_RATIO;
+    },
 
+    b2dToPx:function(value){
+        return value*PTM_RATIO;
+    },
+
+    createSea:function(){
+        var u = 32;
+        var v = 5;
+        var u_margin = 7;
+        var v_margin = 5;
+        var space = 15;
+        for(var i = 0 ; i< u ; i++){
+            for(var j = 0 ; j< v ; j++){
+                var p = cc.p(u_margin+(i*space),v_margin+(j*space));
+                this.addNewWaterParticleWithCoords(p)
+            }
+        }
     },
 
     update:function (dt) {
@@ -164,8 +181,8 @@ MyLayer = cc.Layer.extend({
         //You need to make an informed choice, the following URL is useful
         //http://gafferongames.com/game-physics/fix-your-timestep/
 
-        var velocityIterations = 8;
-        var positionIterations = 1;
+        var velocityIterations = 4; //8
+        var positionIterations = 1; //4
 
         // Instruct the world to perform a single step of simulation. It is
         // generally best to keep the time step and iterations fixed.

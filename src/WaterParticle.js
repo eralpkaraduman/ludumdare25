@@ -7,9 +7,9 @@ WaterParticle = cc.Node.extend({
         //glLineWidth(2);
         cc.renderContext.lineWidth = "0";
 
-        var numPoints = 8*2;
+        var numPoints = 16;
         var angle = 2 * Math.PI / numPoints
-        var radius = 5;
+        var radius = 11;
         var centreX = 0;
         var centreY = 0;
         var vertices2 = [];
