@@ -83,7 +83,22 @@ MyLayer = cc.Layer.extend({
         var mgr = cc.SpriteBatchNode.create(s_pathBlock, 150);
         this.addChild(mgr, 0, TAG_SPRITE_MANAGER);
 
-        //this.addNewSpriteWithCoords(cc.p(screenSize.width / 2, screenSize.height / 2));
+
+        this.createSea();
+
+
+        // engine
+        /*
+        var engineFixDef = new b2FixtureDef;
+        engineFixDef.density = 1.0;
+        engineFixDef.friction = 0.5;
+        engineFixDef.restitution = 0.2;
+
+        var engineWingBodyDef = new b2BodyDef;
+        engineFixDef.type = b2Body.b2_dynamicBody;
+        engineFixDef.shape.SetAsBox(this.pxToB2d(10),this.pxToB2d(10));
+        this.world.CreateBody(engineWingBodyDef).CreateFixture(engineFixDef);
+        */
 
         var label = cc.LabelTTF.create("Tap screen", "Marker Felt", 32);
         this.addChild(label, 0);
@@ -101,7 +116,7 @@ MyLayer = cc.Layer.extend({
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
 
-        this.createSea();
+
 
         this.scheduleUpdate();
     },
@@ -181,6 +196,8 @@ MyLayer = cc.Layer.extend({
         //You need to make an informed choice, the following URL is useful
         //http://gafferongames.com/game-physics/fix-your-timestep/
 
+        //TODO use timestep
+
         var velocityIterations = 4; //8
         var positionIterations = 1; //4
 
@@ -198,6 +215,8 @@ MyLayer = cc.Layer.extend({
                 //console.log(b.GetAngle());
             }
         }
+
+
     },
     onMouseUp:function (event) {
         //Add a new body/atlas sprite at the touched location
